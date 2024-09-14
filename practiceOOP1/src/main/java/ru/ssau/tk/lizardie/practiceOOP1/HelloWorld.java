@@ -1,0 +1,8 @@
+package ru.ssau.tk.lizardie.practiceOOP1;
+
+public class HelloWorld {
+
+    public static void main(String[] args) {
+        System.out.println("Hello, World!");
+    }
+}
