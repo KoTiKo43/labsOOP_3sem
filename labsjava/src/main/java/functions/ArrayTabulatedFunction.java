@@ -106,7 +106,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
 
     @Override
     protected double extrapolateLeft(double x) {
-        if (count - 1 == 0) {
+        if (count - 2== 0) {
             return yValues[0];
         }
         return interpolate(x, getX(0), getX(1), getY(0), getY(1));
@@ -114,7 +114,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
 
     @Override
     protected double extrapolateRight(double x) {
-        if (count - 1 == 0) {
+        if (count - 2 == 0) {
             return yValues[0];
         }
         return interpolate(x, getX(count - 2), getX(count - 1), getY(count - 2), getY(count - 1));
