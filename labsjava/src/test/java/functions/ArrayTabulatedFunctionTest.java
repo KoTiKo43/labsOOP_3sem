@@ -126,4 +126,52 @@ public class ArrayTabulatedFunctionTest {
         assertEquals(7, function.getCount());
     }
 
+    public void testRemoveMiddle() {
+        double[] xValues = {1., 2., 3.};
+        double[] yValues = {2., 4., 6.};
+        ArrayTabulatedFunction function = new ArrayTabulatedFunction(xValues, yValues);
+
+        function.remove(1);
+        assertEquals(3., function.getX(1), 1e-5);
+        assertEquals(6., function.getY(1), 1e-5);
+        assertEquals(2, function.getCount());
+    }
+
+    @Test
+    public void testRemoveFirst() {
+        double[] xValues = {1., 2., 3.};
+        double[] yValues = {2., 4., 6.};
+        ArrayTabulatedFunction function = new ArrayTabulatedFunction(xValues, yValues);
+
+        function.remove(0);
+        assertEquals(2., function.getX(0), 1e-5);
+        assertEquals(4., function.getY(0), 1e-5);
+        assertEquals(2, function.getCount());
+    }
+
+    @Test
+    public void testRemoveLast() {
+        double[] xValues = {1., 2., 3.};
+        double[] yValues = {2., 4., 6.};
+        ArrayTabulatedFunction function = new ArrayTabulatedFunction(xValues, yValues);
+
+        function.remove(2);
+        assertEquals(2., function.getX(function.getCount() - 1), 1e-5);
+        assertEquals(4., function.getY(function.getCount() - 1), 1e-5);
+        assertEquals(2, function.getCount());
+    }
+
+    @Test
+    public void testRemoveInvalidIndex() {
+        double[] xValues = {1., 2., 3.};
+        double[] yValues = {2., 4., 6.};
+        ArrayTabulatedFunction function = new ArrayTabulatedFunction(xValues, yValues);
+        int originalCount = function.getCount();
+
+        function.remove(-1);
+        assertEquals(originalCount, function.getCount());
+
+        function.remove(originalCount);
+        assertEquals(originalCount, function.getCount());
+    }
 }
