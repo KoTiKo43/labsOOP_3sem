@@ -1,7 +1,7 @@
 package functions;
 
 abstract public class AbstractTabulatedFunction implements TabulatedFunction {
-    private int count;
+    protected int count;
 
     protected abstract int floorIndexOfX(double x);
 
