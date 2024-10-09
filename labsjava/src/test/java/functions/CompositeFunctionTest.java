@@ -90,7 +90,6 @@ class CompositeFunctionTest {
         CompositeFunction composite = new CompositeFunction(tabulatedFunc2, tabulatedFunc1);
 
         for (int x = 1; x < 6; x++) {
-            System.out.println(composite.apply(x));
             assertEquals(composite.apply(x), x, 1e-6);
         }
     }
