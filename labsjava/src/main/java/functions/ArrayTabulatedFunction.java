@@ -157,7 +157,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
             yValues = newYValues;
             count++;
         }
-
+    }
     @Override
     public void remove(int index) {
         if (index < 0 || index >= count) {
