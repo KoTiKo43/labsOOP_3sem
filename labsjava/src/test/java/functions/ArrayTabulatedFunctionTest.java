@@ -80,4 +80,24 @@ public class ArrayTabulatedFunctionTest {
 
         assertEquals(6.0, arrayTabulatedFunctionMath.interpolate(3.0, 2));
     }
+
+    @Test
+    public void testApply() {
+        double[] xValues = {1.0, 2.0, 3.0, 4.0, 5.0};
+        double[] yValues = {2.0, 4.0, 6.0, 8.0, 10.0};
+
+        ArrayTabulatedFunction function = new ArrayTabulatedFunction(xValues, yValues);
+
+        assertEquals(2.0, function.apply(1.0), 1e-5);
+        assertEquals(4.0, function.apply(2.0), 1e-5);
+        assertEquals(6.0, function.apply(3.0), 1e-5);
+        assertEquals(8.0, function.apply(4.0), 1e-5);
+        assertEquals(10.0, function.apply(5.0), 1e-5);
+
+        assertEquals(3.0, function.apply(1.5), 1e-5); // Между 1 и 2
+        assertEquals(7.0, function.apply(3.5), 1e-5); // Между 3 и 4
+
+        assertEquals(0.0, function.apply(0.0), 1e-5);  // Левее всех значений x
+        assertEquals(12.0, function.apply(6.0), 1e-5); // Правее всех значений x
+    }
 }
