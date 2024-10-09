@@ -126,6 +126,7 @@ public class ArrayTabulatedFunctionTest {
         assertEquals(7, function.getCount());
     }
 
+    @Test
     public void testRemoveMiddle() {
         double[] xValues = {1., 2., 3.};
         double[] yValues = {2., 4., 6.};
