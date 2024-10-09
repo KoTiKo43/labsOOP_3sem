@@ -102,6 +102,30 @@ public class ArrayTabulatedFunctionTest {
     }
 
     @Test
+    public void testInsertion() {
+        double[] xValues = {1, 2, 4, 5};
+        double[] yValues = {1, 4, 16, 25};
+        ArrayTabulatedFunction function = new ArrayTabulatedFunction(xValues, yValues);
+
+        function.insert(2, 5);
+        assertEquals(5, function.getY(function.indexOfX(2)), 1e-6);
+
+        function.insert(3, 9);
+        assertEquals(3, function.getX(function.indexOfX(3)), 1e-6);
+        assertEquals(9, function.getY(function.indexOfX(3)), 1e-6);
+        assertEquals(5, function.getCount());
+
+        function.insert(0, 0);
+        assertEquals(0, function.getX(function.indexOfX(0)), 1e-6);
+        assertEquals(0, function.getY(function.indexOfX(0)), 1e-6);
+        assertEquals(6, function.getCount());
+
+        function.insert(6, 36);
+        assertEquals(6, function.getX(function.indexOfX(6)), 1e-6);
+        assertEquals(36, function.getY(function.indexOfX(6)), 1e-6);
+        assertEquals(7, function.getCount());
+    }
+
     public void testRemoveMiddle() {
         double[] xValues = {1., 2., 3.};
         double[] yValues = {2., 4., 6.};

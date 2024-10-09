@@ -168,4 +168,27 @@ public class LinkedListTabulatedFunctionTest {
         assertEquals(36, function.getY(function.getCount() - 1), 1e-6);
         assertEquals(6, function.getCount());
     }
+
+    @Test
+    public void testRemove() {
+        double[] xValues = {1, 2, 3, 4, 5};
+        double[] yValues = {1, 4, 9, 16, 25};
+        LinkedListTabulatedFunction function = new LinkedListTabulatedFunction(xValues, yValues);
+
+        function.remove(2);
+        assertEquals(4, function.getCount());
+        assertEquals(4, function.getX(2), 1e-6);
+
+        function.remove(0);
+        assertEquals(3, function.getCount());
+        assertEquals(2, function.getX(0), 1e-6);
+
+        function.remove(2);
+        assertEquals(2, function.getCount());
+        assertEquals(4, function.getX(1), 1e-6);
+        function.remove(0);
+        function.remove(0);
+        function.remove(0);
+    }
+
 }
