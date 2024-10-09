@@ -124,23 +124,44 @@ public class LinkedListTabulatedFunctionTest {
     }
 
     @Test
-    public void testInsertion() {
+    public void testInsertionReplace() {
         double[] xValues = {1, 2, 3, 4, 5};
         double[] yValues = {1, 4, 9, 16, 25};
         LinkedListTabulatedFunction function = new LinkedListTabulatedFunction(xValues, yValues);
 
         function.insert(3, 10);
         assertEquals(10, function.getY(function.indexOfX(3)), 1e-6);
+    }
+
+    @Test
+    public void testInsertionBetween() {
+        double[] xValues = {1, 2, 3, 4, 5};
+        double[] yValues = {1, 4, 9, 16, 25};
+        LinkedListTabulatedFunction function = new LinkedListTabulatedFunction(xValues, yValues);
 
         function.insert(3.5, 12.25);
-        assertEquals(3.5, function.getX(4), 1e-6);
-        assertEquals(12.25, function.getY(4), 1e-6);
+        assertEquals(3.5, function.getX(3), 1e-6);
+        assertEquals(12.25, function.getY(3), 1e-6);
         assertEquals(6, function.getCount());
+    }
+
+    @Test
+    public void testInsertionFirst() {
+        double[] xValues = {1, 2, 3, 4, 5};
+        double[] yValues = {1, 4, 9, 16, 25};
+        LinkedListTabulatedFunction function = new LinkedListTabulatedFunction(xValues, yValues);
 
         function.insert(0, 0);
         assertEquals(0, function.getX(0), 1e-6);
         assertEquals(0, function.getY(0), 1e-6);
         assertEquals(6, function.getCount());
+    }
+
+    @Test
+    public void testInsertionLast() {
+        double[] xValues = {1, 2, 3, 4, 5};
+        double[] yValues = {1, 4, 9, 16, 25};
+        LinkedListTabulatedFunction function = new LinkedListTabulatedFunction(xValues, yValues);
 
         function.insert(6, 36);
         assertEquals(6, function.getX(function.getCount() - 1), 1e-6);
