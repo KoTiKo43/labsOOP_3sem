@@ -5,9 +5,27 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ChebyshevPolynomialInterpolationTest {
 
+    private static class SinFunction implements MathFunction {
+        @Override
+        public double apply(double x) {
+            return Math.sin(x);
+        }
+    }
+    private static class CosFunction implements MathFunction {
+        @Override
+        public double apply(double x) {
+            return Math.cos(x);
+        }
+    }
+    private static class ExponentialFunction implements MathFunction {
+        @Override
+        public double apply(double x) {
+            return Math.exp(x);
+        }
+    }
     @Test
     public void testInterpolationWithSin() {
-        MathFunction function = Math::sin;
+        MathFunction function = new SinFunction();
         ChebyshevPolynomialInterpolation interpolation = new ChebyshevPolynomialInterpolation(function, -Math.PI, Math.PI, 15);
 
         double[] testNodes = {-Math.PI, -Math.PI / 2, 0, Math.PI / 2, Math.PI};
@@ -18,7 +36,7 @@ class ChebyshevPolynomialInterpolationTest {
 
     @Test
     public void testInterpolationWithCos() {
-        MathFunction function = Math::cos;
+        MathFunction function = new CosFunction();
         ChebyshevPolynomialInterpolation interpolation = new ChebyshevPolynomialInterpolation(function, -Math.PI, Math.PI, 15);
 
         double[] testNodes = {-Math.PI, -Math.PI / 2, 0, Math.PI / 2, Math.PI};
@@ -29,7 +47,7 @@ class ChebyshevPolynomialInterpolationTest {
 
     @Test
     public void testInterpolationWithExponentialFunction() {
-        MathFunction function = Math::exp;
+        MathFunction function = new ExponentialFunction();
         ChebyshevPolynomialInterpolation interpolation = new ChebyshevPolynomialInterpolation(function, -1, 1, 15);
 
         double[] testNodes = {-1, -0.5, 0, 0.5, 1};
@@ -41,6 +59,19 @@ class ChebyshevPolynomialInterpolationTest {
     @Test
     public void testInterpolationWithSqrFunction() {
         MathFunction function = new SqrFunction();
+        ChebyshevPolynomialInterpolation interpolation = new ChebyshevPolynomialInterpolation(function, -1, 1, 15);
+
+        double[] testNodes = {-1, -0.5, 0, 0.5, 1};
+        for (double node : testNodes) {
+            assertEquals(function.apply(node), interpolation.apply(node), 1e-4);
+        }
+    }
+
+    @Test
+    public void testInterpolationWithCompositeFunction() {
+        MathFunction linearFunction = new IdentityFunction();
+        MathFunction sqr = new SqrFunction();
+        CompositeFunction function = new CompositeFunction(linearFunction, sqr);
         ChebyshevPolynomialInterpolation interpolation = new ChebyshevPolynomialInterpolation(function, -1, 1, 15);
 
         double[] testNodes = {-1, -0.5, 0, 0.5, 1};
