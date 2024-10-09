@@ -100,4 +100,30 @@ public class ArrayTabulatedFunctionTest {
         assertEquals(0.0, function.apply(0.0), 1e-5);  // Левее всех значений x
         assertEquals(12.0, function.apply(6.0), 1e-5); // Правее всех значений x
     }
+
+    @Test
+    public void testInsertion() {
+        double[] xValues = {1, 2, 4, 5};
+        double[] yValues = {1, 4, 16, 25};
+        ArrayTabulatedFunction function = new ArrayTabulatedFunction(xValues, yValues);
+
+        function.insert(2, 5);
+        assertEquals(5, function.getY(function.indexOfX(2)), 1e-6);
+
+        function.insert(3, 9);
+        assertEquals(3, function.getX(function.indexOfX(3)), 1e-6);
+        assertEquals(9, function.getY(function.indexOfX(3)), 1e-6);
+        assertEquals(5, function.getCount());
+
+        function.insert(0, 0);
+        assertEquals(0, function.getX(function.indexOfX(0)), 1e-6);
+        assertEquals(0, function.getY(function.indexOfX(0)), 1e-6);
+        assertEquals(6, function.getCount());
+
+        function.insert(6, 36);
+        assertEquals(6, function.getX(function.indexOfX(6)), 1e-6);
+        assertEquals(36, function.getY(function.indexOfX(6)), 1e-6);
+        assertEquals(7, function.getCount());
+    }
+
 }
