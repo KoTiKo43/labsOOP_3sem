@@ -1,6 +1,6 @@
 package functions;
 
-public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
+public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements Insertable {
 
     private Node head;
     private int count;
@@ -172,5 +172,52 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
         Node left = head.prev.prev;
         Node right = head.prev;
         return interpolate(x, left.x, right.x, left.y, right.y);
+    }
+
+    @Override
+    public void insert(double x, double y) {
+        if (head == null) {
+            addNode(x, y);
+            return;
+        }
+
+        Node current = head;
+
+        do {
+            if (current.x == x) {
+                current.y = y;
+                return;
+            }
+            if (current.x < x && current.next.x > x) {
+                Node newNode = new Node(x, y);
+                Node next = current.next;
+
+                current.next = newNode;
+                newNode.prev = current;
+                newNode.next = next;
+                next.prev = newNode;
+
+                count++;
+                return;
+            }
+        } while (current != head);
+
+        if (x < head.x) {
+            Node newNode = new Node(x, y);
+            Node last = head.prev; // head указывает на первый элемент в списке
+
+            newNode.next = head;
+            newNode.prev = last;
+            last.next = newNode;
+            head.prev = newNode;
+            head = newNode; // Обновляем головной узел
+
+            count++;
+            return;
+        }
+
+        if (x > head.prev.x) {
+            addNode(x, y);
+        }
     }
 }
