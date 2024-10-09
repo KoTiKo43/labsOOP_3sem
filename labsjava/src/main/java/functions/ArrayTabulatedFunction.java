@@ -130,8 +130,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     public void insert(double x, double y) {
         if (indexOfX(x) != -1) {
             setY(indexOfX(x), y);
-        }
-        else {
+        } else {
             double[] newXValues = new double[count + 1];
             double[] newYValues = new double[count + 1];
 
@@ -141,8 +140,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
 
                 System.arraycopy(xValues, 0, newXValues, 1, count);
                 System.arraycopy(yValues, 0, newYValues, 1, count);
-            }
-            else{
+            } else {
                 int index = floorIndexOfX(x);
                 System.arraycopy(xValues, 0, newXValues, 0, index + 1);
                 System.arraycopy(yValues, 0, newYValues, 0, index + 1);
@@ -157,6 +155,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
             yValues = newYValues;
             count++;
         }
+    }
 
     @Override
     public void remove(int index) {

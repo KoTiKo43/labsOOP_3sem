@@ -60,7 +60,7 @@ class CompositeFunctionTest {
     }
 
     @Test
-    public void testCompositeFunctionWithTabulated() {
+    public void testCompositeFunctionWithListTabulated() {
         double[] xValues = {1, 2, 3, 4, 5};
         double[] yValues = {1, 4, 9, 16, 25};
 
@@ -94,4 +94,19 @@ class CompositeFunctionTest {
         }
     }
 
+    @Test
+    public void testCompositeFunctionWithArrayTabulated() {
+        double[] xValues = {1, 2, 3, 4, 5};
+        double[] yValues = {1, 4, 9, 16, 25};
+
+        ArrayTabulatedFunction tabulatedFunc = new ArrayTabulatedFunction(xValues, yValues);
+
+        MathFunction sqrFunction = new SqrFunction();
+
+        CompositeFunction composite = new CompositeFunction(tabulatedFunc, sqrFunction);
+
+        for (int x = 1; x < 6; x++) {
+            assertEquals(composite.apply(x), Math.pow(x, 4), 1e-6);
+        }
+    }
 }
