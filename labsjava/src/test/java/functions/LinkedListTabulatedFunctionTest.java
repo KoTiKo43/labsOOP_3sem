@@ -14,6 +14,7 @@ public class LinkedListTabulatedFunctionTest {
         assertEquals(5, function.getCount());
         assertEquals(1, function.getX(0));
         assertEquals(25, function.getY(4));
+        assertThrows(IllegalArgumentException.class, () -> new LinkedListTabulatedFunction(new double[]{1}, new double[]{1}));
     }
 
     @Test
@@ -24,6 +25,7 @@ public class LinkedListTabulatedFunctionTest {
         assertEquals(5, function.getCount());
         assertEquals(1, function.getX(0));
         assertEquals(25, function.getY(4));
+        assertThrows(IllegalArgumentException.class, () -> new LinkedListTabulatedFunction(sqrFunction, 0, 5, 1));
     }
 
     @Test
@@ -33,6 +35,7 @@ public class LinkedListTabulatedFunctionTest {
         LinkedListTabulatedFunction function = new LinkedListTabulatedFunction(xValues, yValues);
 
         assertEquals(3, function.getX(2));
+        assertThrows(IllegalArgumentException.class, () -> function.getX(-1));
     }
 
     @Test
@@ -42,6 +45,7 @@ public class LinkedListTabulatedFunctionTest {
         LinkedListTabulatedFunction function = new LinkedListTabulatedFunction(xValues, yValues);
 
         assertEquals(16, function.getY(3));
+        assertThrows(IllegalArgumentException.class, () -> function.getX(-1));
     }
 
     @Test
@@ -52,6 +56,7 @@ public class LinkedListTabulatedFunctionTest {
 
         function.setY(2, 10);
         assertEquals(10, function.getY(2));
+        assertThrows(IllegalArgumentException.class, () -> function.getX(-1));
     }
 
     @Test
@@ -81,7 +86,7 @@ public class LinkedListTabulatedFunctionTest {
         LinkedListTabulatedFunction function = new LinkedListTabulatedFunction(xValues, yValues);
 
         assertEquals(2, function.floorIndexOfX(3.5));
-        assertEquals(0, function.floorIndexOfX(0.5));
+        assertThrows(IllegalArgumentException.class, () -> function.floorIndexOfX(0.5));
     }
 
     @Test
@@ -179,6 +184,8 @@ public class LinkedListTabulatedFunctionTest {
         assertEquals(4, function.getCount());
         assertEquals(4, function.getX(2), 1e-6);
 
+        assertThrows(IllegalArgumentException.class, () -> function.remove(-1));
+
         function.remove(0);
         assertEquals(3, function.getCount());
         assertEquals(2, function.getX(0), 1e-6);
@@ -186,9 +193,9 @@ public class LinkedListTabulatedFunctionTest {
         function.remove(2);
         assertEquals(2, function.getCount());
         assertEquals(4, function.getX(1), 1e-6);
+        function.remove(1);
         function.remove(0);
-        function.remove(0);
-        function.remove(0);
+        assertThrows(IllegalArgumentException.class, () -> function.remove(0));
     }
 
 }
