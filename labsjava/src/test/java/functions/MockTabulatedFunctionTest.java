@@ -80,4 +80,9 @@ class MockTabulatedFunctionTest {
     public void testGetCount() {
         assertEquals(2, mockTabulatedFunction.getCount());
     }
+
+    @Test
+    public void testIterator() {
+        assertThrows(UnsupportedOperationException.class, () -> mockTabulatedFunction.iterator());
+    }
 }
