@@ -46,4 +46,12 @@ class ConstantFunctionTest {
 
         assertEquals(constNum, result);
     }
+
+    @Test
+    public void testGetNum() {
+        double num;
+        num = constantFunction.getConstNum();
+
+        assertEquals(constNum, num);
+    }
 }
