@@ -1,6 +1,7 @@
 package functions;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
 public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements Removable, Insertable {
 
@@ -174,4 +175,10 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         yValues = newYValues;
         count--;
     }
+
+    @Override
+    public Iterator<Point> iterator(){
+        throw new UnsupportedOperationException("Iterator not supported");
+    }
+
 }
