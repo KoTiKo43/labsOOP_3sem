@@ -1,6 +1,10 @@
 package functions;
 
 import org.junit.jupiter.api.Test;
+
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LinkedListTabulatedFunctionTest {
@@ -196,6 +200,35 @@ public class LinkedListTabulatedFunctionTest {
         function.remove(1);
         function.remove(0);
         assertThrows(IllegalArgumentException.class, () -> function.remove(0));
+    }
+
+    @Test
+    public void testIteratorForEach() {
+        double[] xValues = {1, 2, 3, 4, 5};
+        double[] yValues = {1, 4, 9, 16, 25};
+        LinkedListTabulatedFunction function = new LinkedListTabulatedFunction(xValues, yValues);
+        int i = 0;
+        for (Point point : function) {
+            assertEquals(xValues[i], point.x, 1e-6);
+            assertEquals(yValues[i], point.y, 1e-6);
+            i++;
+        }
+    }
+
+    @Test
+    public void testIteratorWhile() {
+        double[] xValues = {1, 2, 3, 4, 5};
+        double[] yValues = {1, 4, 9, 16, 25};
+        LinkedListTabulatedFunction function = new LinkedListTabulatedFunction(xValues, yValues);
+        Iterator<Point> iterator = function.iterator();
+        int i = 0;
+        while (iterator.hasNext()) {
+            Point point = iterator.next();
+            assertEquals(xValues[i], point.x, 1e-6);
+            assertEquals(yValues[i], point.y, 1e-6);
+            i++;
+        }
+        assertThrows(NoSuchElementException.class, iterator::next);
     }
 
 }
