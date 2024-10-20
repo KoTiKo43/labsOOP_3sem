@@ -2,6 +2,7 @@ package functions;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import exceptions.InterpolationException;
 
 public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements Insertable, Removable {
 
@@ -37,9 +38,12 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         count++;
     }
 
-    public LinkedListTabulatedFunction(double[] xValues, double[] yValues){
+    public LinkedListTabulatedFunction(double[] xValues, double[] yValues) {
         if (xValues.length < 2)
             throw new IllegalArgumentException("list must contain at least two elements");
+
+        checkLengthIsTheSame(xValues, yValues);
+        checkSorted(xValues);
 
         for (int i = 0; i < xValues.length; i++) {
             addNode(xValues[i], yValues[i]);
@@ -67,8 +71,15 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
                 addNode(x, source.apply(x));
             }
         }
+        double[] xValues = new double[count];
+        for (int i = 0; i < count; i++) {
+            xValues[i] = getX(i);
+        }
+        checkSorted(xValues);
 
+        this.count = count;
     }
+
     @Override
     public int getCount() {
         return count;
@@ -135,7 +146,6 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         return -1;
     }
 
-
     @Override
     public int indexOfY(double y) {
         Node current = head;
@@ -161,9 +171,14 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         return 0;
     }
 
-
     @Override
     protected double interpolate(double x, int floorIndex) {
+        if (count == 1) {
+            return head.y;
+        }
+
+        if (!(x > getX(floorIndex) && x < getX(floorIndex + 1))) throw new InterpolationException("X is out of range");
+
         Node left = getNode(floorIndex);
         Node right = left.next;
         return interpolate(x, left.x, right.x, left.y, right.y);
