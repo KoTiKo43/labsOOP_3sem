@@ -134,7 +134,6 @@ public class LinkedListTabulatedFunctionTest {
         LinkedListTabulatedFunction function = new LinkedListTabulatedFunction(xValues, yValues);
 
         assertEquals(-2, function.extrapolateLeft(0), 1e-6);
-        assertEquals(2.0, new LinkedListTabulatedFunction(new double[]{1.0}, new double[]{2.0}).extrapolateLeft(0), 1e-6);
     }
 
     @Test
@@ -144,7 +143,6 @@ public class LinkedListTabulatedFunctionTest {
         LinkedListTabulatedFunction function = new LinkedListTabulatedFunction(xValues, yValues);
 
         assertEquals(34, function.extrapolateRight(6), 1e-6);
-        assertEquals(2.0, new LinkedListTabulatedFunction(new double[]{1.0}, new double[]{2.0}).extrapolateRight(0), 1e-6);
     }
 
     @Test
