@@ -3,6 +3,7 @@ package functions;
 import exceptions.InterpolationException;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
 public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements Removable, Insertable {
 
@@ -10,6 +11,9 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     private double[] yValues;
 
     public ArrayTabulatedFunction(double[] xValues, double[] yValues) {
+        if (xValues.length < 2)
+            throw new IllegalArgumentException("list must contain at least two elements");
+
         checkLengthIsTheSame(xValues, yValues);
         checkSorted(xValues);
 
@@ -20,6 +24,9 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     }
 
     public ArrayTabulatedFunction (MathFunction source, double xFrom, double xTo, int count) {
+        if (count < 2)
+            throw new IllegalArgumentException("array must contain at least two elements");
+
         if (xFrom > xTo) {
             double temp = xFrom;
             xFrom = xTo;
@@ -96,9 +103,8 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
 
     @Override
     protected int floorIndexOfX(double x) {
-        if (x < xValues[0]) {
-            return 0;
-        }
+        if (x < leftBound())
+            throw new IllegalArgumentException("x is less than left bound");
 
         if (x >= xValues[count - 1]) {
             return count - 1;
@@ -114,17 +120,11 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
 
     @Override
     protected double extrapolateLeft(double x) {
-        if (count - 1 == 0) {
-            return yValues[0];
-        }
         return interpolate(x, getX(0), getX(1), getY(0), getY(1));
     }
 
     @Override
     protected double extrapolateRight(double x) {
-        if (count - 1 == 0) {
-            return yValues[0];
-        }
         return interpolate(x, getX(count - 2), getX(count - 1), getY(count - 2), getY(count - 1));
     }
 
@@ -185,4 +185,10 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         yValues = newYValues;
         count--;
     }
+
+    @Override
+    public Iterator<Point> iterator(){
+        throw new UnsupportedOperationException("Iterator not supported");
+    }
+
 }

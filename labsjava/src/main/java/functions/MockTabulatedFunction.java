@@ -106,4 +106,9 @@ public class MockTabulatedFunction extends AbstractTabulatedFunction {
     public double rightBound() {
         return x1;
     }
+
+    @Override
+    public java.util.Iterator<Point> iterator() {
+        throw new UnsupportedOperationException("Iterator not supported");
+    }
 }
