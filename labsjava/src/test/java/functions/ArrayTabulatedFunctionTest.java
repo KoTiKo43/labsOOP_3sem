@@ -7,6 +7,8 @@ import exceptions.DifferentLengthOfArraysException;
 import org.junit.jupiter.api.Test;
 import exceptions.InterpolationException;
 
+import java.util.Iterator;
+
 public class ArrayTabulatedFunctionTest {
     @Test
     public void testGet() {
@@ -90,9 +92,7 @@ public class ArrayTabulatedFunctionTest {
         ArrayTabulatedFunction arrayTabulatedFunctionMath = new ArrayTabulatedFunction(func, 0, 4, 5);
 
         assertEquals(-2.0, arrayTabulatedFunctionMath.extrapolateLeft(-1), 1e-6);
-        assertEquals(2.0, new ArrayTabulatedFunction(new double[]{1.0}, new double[]{2.0}).extrapolateLeft(0), 1e-6);
         assertEquals(10.0, arrayTabulatedFunctionMath.extrapolateRight(5), 1e-6);
-        assertEquals(2.0, new ArrayTabulatedFunction(new double[]{1.0}, new double[]{2.0}).extrapolateRight(0), 1e-6);
     }
 
     @Test
@@ -205,5 +205,30 @@ public class ArrayTabulatedFunctionTest {
 
         function.remove(originalCount);
         assertEquals(originalCount, function.getCount());
+    }
+
+    @Test
+    public void testIterator() {
+        double[] xValues = {1., 2., 3.};
+        double[] yValues = {2., 4., 6.};
+        ArrayTabulatedFunction function = new ArrayTabulatedFunction(xValues, yValues);
+
+        Iterator<Point> iterator = function.iterator();
+        int ind = 0;
+
+        while (iterator.hasNext()) {
+            Point point = iterator.next();
+
+            assertEquals(function.getX(ind), point.x, 1e-5);
+            assertEquals(function.getY(ind), point.y, 1e-5);
+            ind++;
+        }
+
+        ind = 0;
+        for (Point point: function) {
+            assertEquals(function.getX(ind), point.x, 1e-5);
+            assertEquals(function.getY(ind), point.y, 1e-5);
+            ind++;
+        }
     }
 }

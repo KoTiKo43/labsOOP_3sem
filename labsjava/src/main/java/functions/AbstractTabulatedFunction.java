@@ -2,7 +2,6 @@ package functions;
 
 import exceptions.ArrayIsNotSortedException;
 import exceptions.DifferentLengthOfArraysException;
-import exceptions.InterpolationException;
 
 abstract public class AbstractTabulatedFunction implements TabulatedFunction {
     protected int count;
