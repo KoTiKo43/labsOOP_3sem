@@ -35,6 +35,7 @@ public class ArrayTabulatedFunctionTest {
         assertEquals(2., arrayTabulatedFunction.getY(0));
         assertEquals(3., arrayTabulatedFunction.getX(2));
         assertEquals(6., arrayTabulatedFunction.getY(2));
+        assertThrows(IllegalArgumentException.class, () -> new ArrayTabulatedFunction(new double[]{1}, new double[]{1}));
 
         MathFunction func = x -> x * 2;
         ArrayTabulatedFunction arrayTabulatedFunctionMath = new ArrayTabulatedFunction(func, 0, 4, 5);
@@ -42,6 +43,7 @@ public class ArrayTabulatedFunctionTest {
         assertEquals(5, arrayTabulatedFunctionMath.getCount());
         assertEquals(0., arrayTabulatedFunctionMath.getX(0));
         assertEquals(8., arrayTabulatedFunctionMath.getY(4));
+        assertThrows(IllegalArgumentException.class, () -> new ArrayTabulatedFunction(func, 0, 5, 1));
     }
 
     @Test
