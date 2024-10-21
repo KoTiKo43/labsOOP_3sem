@@ -143,4 +143,94 @@ class TabulatedFunctionOperationServiceTest {
         assertEquals(function1.getY(1) - function2.getY(1), result2.getY(1), 1e-5);
         assertEquals(function1.getY(2) - function2.getY(2), result2.getY(2), 1e-5);
     }
+
+    @Test
+    public void testMultiplyArrayFunctions() {
+        ArrayTabulatedFunctionFactory factory = new ArrayTabulatedFunctionFactory();
+        TabulatedFunctionOperationService service = new TabulatedFunctionOperationService(factory);
+
+        ArrayTabulatedFunction function1 = new ArrayTabulatedFunction(new double[]{1, 2, 3}, new double[]{10, 20, 30});
+        ArrayTabulatedFunction function2 = new ArrayTabulatedFunction(new double[]{1, 2, 3}, new double[]{1, 2, 3});
+
+        TabulatedFunction result = service.multiply(function1, function2);
+
+        assertEquals(function1.getY(0) * function2.getY(0), result.getY(0), 1e-5);
+        assertEquals(function1.getY(1) * function2.getY(1), result.getY(1), 1e-5);
+        assertEquals(function1.getY(2) * function2.getY(2), result.getY(2), 1e-5);
+    }
+
+    @Test
+    public void testMultiplyLinkedListFunctions() {
+        LinkedListTabulatedFunctionFactory factory = new LinkedListTabulatedFunctionFactory();
+        TabulatedFunctionOperationService service = new TabulatedFunctionOperationService(factory);
+
+        LinkedListTabulatedFunction function1 = new LinkedListTabulatedFunction(new double[]{1, 2, 3}, new double[]{10, 20, 30});
+        LinkedListTabulatedFunction function2 = new LinkedListTabulatedFunction(new double[]{1, 2, 3}, new double[]{1, 2, 3});
+
+        TabulatedFunction result = service.multiply(function1, function2);
+
+        assertEquals(function1.getY(0) * function2.getY(0), result.getY(0), 1e-5);
+        assertEquals(function1.getY(1) * function2.getY(1), result.getY(1), 1e-5);
+        assertEquals(function1.getY(2) * function2.getY(2), result.getY(2), 1e-5);
+    }
+
+    @Test
+    public void testDivideArrayFunctions() {
+        ArrayTabulatedFunctionFactory factory = new ArrayTabulatedFunctionFactory();
+        TabulatedFunctionOperationService service = new TabulatedFunctionOperationService(factory);
+
+        ArrayTabulatedFunction function1 = new ArrayTabulatedFunction(new double[]{1, 2, 3}, new double[]{10, 20, 30});
+        ArrayTabulatedFunction function2 = new ArrayTabulatedFunction(new double[]{1, 2, 3}, new double[]{1, 2, 3});
+
+        TabulatedFunction result = service.divide(function1, function2);
+
+        assertEquals(function1.getY(0) / function2.getY(0), result.getY(0), 1e-5);
+        assertEquals(function1.getY(1) / function2.getY(1), result.getY(1), 1e-5);
+        assertEquals(function1.getY(2) / function2.getY(2), result.getY(2), 1e-5);
+    }
+
+    @Test
+    public void testDivideLinkedListFunctions() {
+        LinkedListTabulatedFunctionFactory factory = new LinkedListTabulatedFunctionFactory();
+        TabulatedFunctionOperationService service = new TabulatedFunctionOperationService(factory);
+
+        LinkedListTabulatedFunction function1 = new LinkedListTabulatedFunction(new double[]{1, 2, 3}, new double[]{10, 20, 30});
+        LinkedListTabulatedFunction function2 = new LinkedListTabulatedFunction(new double[]{1, 2, 3}, new double[]{1, 2, 3});
+
+        TabulatedFunction result = service.divide(function1, function2);
+
+        assertEquals(function1.getY(0) / function2.getY(0), result.getY(0), 1e-5);
+        assertEquals(function1.getY(1) / function2.getY(1), result.getY(1), 1e-5);
+        assertEquals(function1.getY(2) / function2.getY(2), result.getY(2), 1e-5);
+    }
+
+    @Test
+    public void testMultiplyDifferentFunctions() {
+        LinkedListTabulatedFunctionFactory factory = new LinkedListTabulatedFunctionFactory();
+        TabulatedFunctionOperationService service = new TabulatedFunctionOperationService(factory);
+
+        LinkedListTabulatedFunction function1 = new LinkedListTabulatedFunction(new double[]{1, 2, 3}, new double[]{10, 20, 30});
+        TabulatedFunction function2 = new ArrayTabulatedFunction(new double[]{1, 2, 3}, new double[]{1, 2, 3});
+
+        TabulatedFunction result = service.multiply(function1, function2);
+
+        assertEquals(function1.getY(0) * function2.getY(0), result.getY(0), 1e-5);
+        assertEquals(function1.getY(1) * function2.getY(1), result.getY(1), 1e-5);
+        assertEquals(function1.getY(2) * function2.getY(2), result.getY(2), 1e-5);
+    }
+
+    @Test
+    public void testDivideDifferentFunctions() {
+        LinkedListTabulatedFunctionFactory factory = new LinkedListTabulatedFunctionFactory();
+        TabulatedFunctionOperationService service = new TabulatedFunctionOperationService(factory);
+
+        LinkedListTabulatedFunction function1 = new LinkedListTabulatedFunction(new double[]{1, 2, 3}, new double[]{10, 20, 30});
+        TabulatedFunction function2 = new ArrayTabulatedFunction(new double[]{1, 2, 3}, new double[]{1, 2, 3});
+
+        TabulatedFunction result = service.divide(function1, function2);
+
+        assertEquals(function1.getY(0) / function2.getY(0), result.getY(0), 1e-5);
+        assertEquals(function1.getY(1) / function2.getY(1), result.getY(1), 1e-5);
+        assertEquals(function1.getY(2) / function2.getY(2), result.getY(2), 1e-5);
+    }
 }
