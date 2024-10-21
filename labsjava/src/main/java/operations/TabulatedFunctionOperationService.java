@@ -53,7 +53,7 @@ public class TabulatedFunctionOperationService {
 
         for (int i = 0; i < a.getCount(); i++) {
             if (pointsA[i].x != pointsB[i].x) {
-                throw new InconsistentFunctionsException("X values of functions do not match");
+                throw new InconsistentFunctionsException("X values of the functions do not match");
             }
 
             xValues[i] = pointsA[i].x;
