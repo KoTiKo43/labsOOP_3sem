@@ -2,16 +2,20 @@ package io;
 
 import functions.Point;
 import functions.TabulatedFunction;
+import functions.factory.TabulatedFunctionFactory;
 
 
 import java.io.*;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.Locale;
 
-final public class FunctionsIO {
+public final class FunctionsIO {
     private FunctionsIO() {
         throw new UnsupportedOperationException("Class is final");
     }
 
-    public static void writeTabulatedFunction(BufferedWriter writer, TabulatedFunction function) throws IOException {
+    static void writeTabulatedFunction(BufferedWriter writer, TabulatedFunction function) throws IOException {
         PrintWriter printWriter = new PrintWriter(writer);
 
         printWriter.println(function.getCount());
@@ -23,7 +27,7 @@ final public class FunctionsIO {
         printWriter.flush();
     }
 
-    public static void writeTabulatedFunction(BufferedOutputStream outputStream, TabulatedFunction function) throws IOException {
+    static void writeTabulatedFunction(BufferedOutputStream outputStream, TabulatedFunction function) throws IOException {
         DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
 
         dataOutputStream.writeInt(function.getCount());
@@ -33,5 +37,28 @@ final public class FunctionsIO {
         }
 
         dataOutputStream.flush();
+    }
+
+    static TabulatedFunction readTabulatedFunction(BufferedReader reader, TabulatedFunctionFactory factory) throws IOException {
+        String string = reader.readLine();
+        int count = Integer.parseInt(string);
+
+        double[] xValues = new double[count];
+        double[] yValues = new double[count];
+
+        NumberFormat numberFormat = NumberFormat.getInstance(Locale.forLanguageTag("ru"));
+
+        for (int i = 0; i < count; ++i) {
+            string = reader.readLine();
+            String[] numbers = string.split(" ");
+            try {
+                xValues[i] = numberFormat.parse(numbers[0]).doubleValue();
+                yValues[i] = numberFormat.parse(numbers[1]).doubleValue();
+            } catch (ParseException e) {
+                throw new IOException(e);
+            }
+        }
+
+        return factory.create(xValues, yValues);
     }
 }

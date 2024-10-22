@@ -18,8 +18,8 @@ public class TabulatedFunctionFileWriter {
         TabulatedFunction arrayFunction = new ArrayTabulatedFunctionFactory().create(xValues, yValues);
         TabulatedFunction linkedFunction = new LinkedListTabulatedFunctionFactory().create(xValues, yValues);
 
-        try (BufferedWriter arrayWriter = new BufferedWriter(new FileWriter("output/array function.txt"))) {
-            BufferedWriter linkedListWriter = new BufferedWriter(new FileWriter("output/linked list function.txt"));
+        try (BufferedWriter arrayWriter = new BufferedWriter(new FileWriter("output/array function.txt"));
+             BufferedWriter linkedListWriter = new BufferedWriter(new FileWriter("output/linked list function.txt"))) {
 
             FunctionsIO.writeTabulatedFunction(arrayWriter, arrayFunction);
             FunctionsIO.writeTabulatedFunction(linkedListWriter, linkedFunction);
