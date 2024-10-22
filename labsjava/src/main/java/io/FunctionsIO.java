@@ -9,8 +9,6 @@ import java.io.*;
 final public class FunctionsIO {
     private FunctionsIO() {
         throw new UnsupportedOperationException("Class is final");
-
-
     }
 
     public static void writeTabulatedFunction(BufferedWriter writer, TabulatedFunction function) throws IOException {
