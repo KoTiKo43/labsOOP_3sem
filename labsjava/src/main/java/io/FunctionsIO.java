@@ -11,17 +11,6 @@ final public class FunctionsIO {
         throw new UnsupportedOperationException("Class is final");
     }
 
-    public static void writeTabulatedFunction(BufferedOutputStream outputStream, TabulatedFunction function) throws IOException {
-        DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
-
-        dataOutputStream.writeInt(function.getCount());
-        for (Point point : function) {
-            dataOutputStream.writeDouble(point.x);
-            dataOutputStream.writeDouble(point.y);
-        }
-
-        dataOutputStream.flush();
-    }
     public static TabulatedFunction readTabulatedFunction(BufferedInputStream inputStream, TabulatedFunctionFactory factory) throws IOException{
         DataInputStream dataInputStream = new DataInputStream(inputStream);
 
