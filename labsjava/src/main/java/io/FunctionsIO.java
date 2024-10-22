@@ -14,6 +14,13 @@ final public class FunctionsIO {
 
     static void writeTabulatedFunction(BufferedOutputStream outputStream, TabulatedFunction function) throws IOException {
         DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
+        PrintWriter printWriter = new PrintWriter(writer);
+
+        printWriter.println(function.getCount());
+
+        for (Point point: function) {
+            printWriter.printf("%f %f\n", point.x, point.y);
+        }
 
         dataOutputStream.writeInt(function.getCount());
         for (Point point : function) {
@@ -22,6 +29,6 @@ final public class FunctionsIO {
         }
 
         dataOutputStream.flush();
+        printWriter.flush();
     }
-
 }
