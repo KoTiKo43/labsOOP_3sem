@@ -4,7 +4,6 @@ import functions.Point;
 import functions.TabulatedFunction;
 import functions.factory.TabulatedFunctionFactory;
 
-
 import java.io.*;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -61,11 +60,28 @@ public final class FunctionsIO {
 
         return factory.create(xValues, yValues);
     }
+      
+    static TabulatedFunction readTabulatedFunction(BufferedInputStream inputStream, TabulatedFunctionFactory factory) throws IOException{
+        DataInputStream dataInputStream = new DataInputStream(inputStream);
 
-    public static void serialize(BufferedOutputStream stream, TabulatedFunction function) throws IOException {
+        int count = dataInputStream.readInt();
+        double[] xValues = new double[count];
+        double[] yValues = new double[count];
+        for (int i = 0; i < count; i++) {
+            xValues[i] = dataInputStream.readDouble();
+            yValues[i] = dataInputStream.readDouble();
+        }
+        return factory.create(xValues, yValues);
+    }
+  
+        public static void serialize(BufferedOutputStream stream, TabulatedFunction function) throws IOException {
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(stream);
         objectOutputStream.writeObject(function);
 
         objectOutputStream.flush();
+
+        public static TabulatedFunction deserialize(BufferedInputStream stream) throws IOException, ClassNotFoundException {
+        ObjectInputStream dataInputStream = new ObjectInputStream(stream);
+        return (TabulatedFunction) dataInputStream.readObject();
     }
 }
