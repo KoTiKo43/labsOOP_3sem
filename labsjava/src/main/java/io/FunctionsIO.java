@@ -5,13 +5,16 @@ import functions.TabulatedFunction;
 import functions.factory.TabulatedFunctionFactory;
 
 import java.io.*;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.Locale;
 
-final public class FunctionsIO {
+public final class FunctionsIO {
     private FunctionsIO() {
         throw new UnsupportedOperationException("Class is final");
     }
 
-    public static void writeTabulatedFunction(BufferedWriter writer, TabulatedFunction function) throws IOException {
+    static void writeTabulatedFunction(BufferedWriter writer, TabulatedFunction function) throws IOException {
         PrintWriter printWriter = new PrintWriter(writer);
 
         printWriter.println(function.getCount());
@@ -23,7 +26,7 @@ final public class FunctionsIO {
         printWriter.flush();
     }
 
-    public static void writeTabulatedFunction(BufferedOutputStream outputStream, TabulatedFunction function) throws IOException {
+    static void writeTabulatedFunction(BufferedOutputStream outputStream, TabulatedFunction function) throws IOException {
         DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
 
         dataOutputStream.writeInt(function.getCount());
@@ -34,7 +37,31 @@ final public class FunctionsIO {
 
         dataOutputStream.flush();
     }
-    public static TabulatedFunction readTabulatedFunction(BufferedInputStream inputStream, TabulatedFunctionFactory factory) throws IOException{
+
+    static TabulatedFunction readTabulatedFunction(BufferedReader reader, TabulatedFunctionFactory factory) throws IOException {
+        String string = reader.readLine();
+        int count = Integer.parseInt(string);
+
+        double[] xValues = new double[count];
+        double[] yValues = new double[count];
+
+        NumberFormat numberFormat = NumberFormat.getInstance(Locale.forLanguageTag("ru"));
+
+        for (int i = 0; i < count; ++i) {
+            string = reader.readLine();
+            String[] numbers = string.split(" ");
+            try {
+                xValues[i] = numberFormat.parse(numbers[0]).doubleValue();
+                yValues[i] = numberFormat.parse(numbers[1]).doubleValue();
+            } catch (ParseException e) {
+                throw new IOException(e);
+            }
+        }
+
+        return factory.create(xValues, yValues);
+    }
+      
+    static TabulatedFunction readTabulatedFunction(BufferedInputStream inputStream, TabulatedFunctionFactory factory) throws IOException{
         DataInputStream dataInputStream = new DataInputStream(inputStream);
 
         int count = dataInputStream.readInt();
@@ -46,8 +73,14 @@ final public class FunctionsIO {
         }
         return factory.create(xValues, yValues);
     }
+  
+        public static void serialize(BufferedOutputStream stream, TabulatedFunction function) throws IOException {
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(stream);
+        objectOutputStream.writeObject(function);
 
-    public static TabulatedFunction deserialize(BufferedInputStream stream) throws IOException, ClassNotFoundException {
+        objectOutputStream.flush();
+
+        public static TabulatedFunction deserialize(BufferedInputStream stream) throws IOException, ClassNotFoundException {
         ObjectInputStream dataInputStream = new ObjectInputStream(stream);
         return (TabulatedFunction) dataInputStream.readObject();
     }
