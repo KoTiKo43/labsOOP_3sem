@@ -9,8 +9,6 @@ import java.io.*;
 final public class FunctionsIO {
     private FunctionsIO() {
         throw new UnsupportedOperationException("Class is final");
-
-
     }
 
     public static void writeTabulatedFunction(BufferedWriter writer, TabulatedFunction function) throws IOException {
@@ -49,4 +47,8 @@ final public class FunctionsIO {
         return factory.create(xValues, yValues);
     }
 
+    public static TabulatedFunction deserialize(BufferedInputStream stream) throws IOException, ClassNotFoundException {
+        ObjectInputStream dataInputStream = new ObjectInputStream(stream);
+        return (TabulatedFunction) dataInputStream.readObject();
+    }
 }
