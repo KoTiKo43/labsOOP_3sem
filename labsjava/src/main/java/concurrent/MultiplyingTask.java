@@ -3,7 +3,7 @@ package concurrent;
 import functions.TabulatedFunction;
 
 public class MultiplyingTask implements Runnable {
-    private TabulatedFunction tabulatedFunction;
+    private final TabulatedFunction tabulatedFunction;
 
     public MultiplyingTask(TabulatedFunction tabulatedFunction) {
         this.tabulatedFunction = tabulatedFunction;
