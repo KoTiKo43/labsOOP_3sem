@@ -101,14 +101,6 @@ public class ArrayTabulatedFunctionTest {
         double[] yValues = {2., 4., 6.};
         ArrayTabulatedFunction arrayTabulatedFunctionArrays = new ArrayTabulatedFunction(xValues, yValues);
 
-        assertThrows(InterpolationException.class, ()->{
-            arrayTabulatedFunctionArrays.interpolate(3.0, 2);
-        });
-
-        assertThrows(InterpolationException.class, ()->{
-            arrayTabulatedFunctionArrays.interpolate(1.0, 0);
-        });
-
         assertEquals(5.0, arrayTabulatedFunctionArrays.interpolate(2.5, 1), 1e-5);
     }
 

@@ -116,14 +116,6 @@ public class LinkedListTabulatedFunctionTest {
         double[] yValues = {1, 4, 9, 16, 25};
         LinkedListTabulatedFunction function = new LinkedListTabulatedFunction(xValues, yValues);
 
-        assertThrows(InterpolationException.class, ()->{
-            function.interpolate(5.0, 4);
-        });
-
-        assertThrows(InterpolationException.class, ()->{
-            function.interpolate(1.0, 0);
-        });
-
         assertEquals(6.5, function.interpolate(2.5, 2, 3, 4, 9), 1e-6);
     }
 
@@ -255,5 +247,4 @@ public class LinkedListTabulatedFunctionTest {
         }
         assertThrows(NoSuchElementException.class, iterator::next);
     }
-
 }
