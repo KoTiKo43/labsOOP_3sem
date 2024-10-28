@@ -12,7 +12,9 @@ public class MultiplyingTask implements Runnable {
     @Override
     public void run() {
         for (int i = 0; i < tabulatedFunction.getCount(); i++) {
-            tabulatedFunction.setY(i, tabulatedFunction.getY(i) * 2);
+            synchronized (tabulatedFunction) {
+                tabulatedFunction.setY(i, tabulatedFunction.getY(i) * 2);
+            }
         }
 
         System.out.println("Thread " + Thread.currentThread().getName() + " completed the task.");
