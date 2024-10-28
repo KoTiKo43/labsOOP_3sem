@@ -20,10 +20,8 @@ public class MultiplyingTaskExecutor {
             thread.start();
         }
 
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        while (!list.isEmpty()) {
+            list.removeIf(thread -> !thread.isAlive());
         }
 
         System.out.println(function);
