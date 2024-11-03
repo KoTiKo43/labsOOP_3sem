@@ -17,6 +17,6 @@ public class MultiplyingTask implements Runnable {
             }
         }
 
-        System.out.println("Thread " + Thread.currentThread().getName() + " completed the task");
+        System.out.println("Thread " + Thread.currentThread().getName() + " completed the task.");
     }
 }
