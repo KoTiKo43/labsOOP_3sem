@@ -4,11 +4,14 @@ import functions.Point;
 import functions.TabulatedFunction;
 import operations.TabulatedFunctionOperationService;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.concurrent.CopyOnWriteArrayList;
 
-public class SynchronizedTabulatedFunction implements TabulatedFunction {
+public class SynchronizedTabulatedFunction implements TabulatedFunction, Serializable {
+    @Serial
+    private static final long serialVersionUID = -5502240101293068142L;
     final TabulatedFunction tabulatedFunction;
 
     public SynchronizedTabulatedFunction(TabulatedFunction tabulatedFunction) {
