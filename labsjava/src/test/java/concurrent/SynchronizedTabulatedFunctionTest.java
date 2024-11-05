@@ -102,4 +102,36 @@ class SynchronizedTabulatedFunctionTest {
             i += 1;
         }
     }
+
+    @Test
+    void testDoSynchronouslySingleThread() {
+        assertInstanceOf(SynchronizedTabulatedFunction.class, functionArray.doSynchronously(function -> {
+            assertEquals(5, function.getCount());
+            assertEquals(1.0, function.leftBound(), 1e-6);
+            assertEquals(5.0, function.rightBound(), 1e-6);
+            assertEquals(4.0, function.getX(3), 1e-6);
+            function.setY(2, 1.5);
+            function.setY(4, 5.5);
+            return function;
+        }));
+
+        assertInstanceOf(ArrayTabulatedFunction.class, functionArray.doSynchronously(function1 -> {
+            assertEquals(4.0, function1.getY(1), 1e-6);
+            assertEquals(8.0, function1.getY(3), 1e-6);
+            assertEquals(5.5, function1.getY(4), 1e-6);
+            assertEquals(2, function1.indexOfY(1.5));
+            assertEquals(4, function1.indexOfY(5.5));
+            return (ArrayTabulatedFunction) function1.tabulatedFunction;
+        }));
+
+        assertNull(functionArray.doSynchronously(function2 -> {
+            function2.setY(4, 6.5);
+            function2.setY(3, -10);
+            function2.setY(2, 4.5);
+            assertEquals(6.5, function2.getY(4), 1e-6);
+            assertEquals(-10, function2.getY(3), 1e-6);
+            assertEquals(4.5, function2.getY(2), 1e-6);
+            return null;
+        }));
+    }
 }

@@ -6,10 +6,20 @@ import functions.TabulatedFunction;
 import java.util.Iterator;
 
 public class SynchronizedTabulatedFunction implements TabulatedFunction {
-    private final TabulatedFunction tabulatedFunction;
+    final TabulatedFunction tabulatedFunction;
 
     public SynchronizedTabulatedFunction(TabulatedFunction tabulatedFunction) {
         this.tabulatedFunction = tabulatedFunction;
+    }
+
+    public interface Operation<T> {
+        T apply(SynchronizedTabulatedFunction function);
+    }
+
+    public <T> T doSynchronously(Operation<? extends T> operation) {
+        synchronized (this) {
+            return operation.apply(this);
+        }
     }
 
     @Override
