@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MathFunctionDTO {
-    private Long id;
+    private Integer id;
     private String functionType;
     private Integer count;
     private Double xFrom;
