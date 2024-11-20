@@ -9,4 +9,5 @@ import java.util.List;
 
 @Repository
 public interface PointRepository extends JpaRepository<PointEntity, Integer> {
+    List<PointEntity> findByFunction(MathFunctionEntity function);
 }

@@ -1,0 +1,1 @@
+SELECT * FROM mathfunction.t_function WHERE id = ?;

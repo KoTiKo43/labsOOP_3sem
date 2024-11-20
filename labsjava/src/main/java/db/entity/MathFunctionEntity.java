@@ -19,19 +19,15 @@ public class MathFunctionEntity {
     private Integer id;
 
     @Column(name = "c_function_type")
-    @NotNull
     private String functionType;
 
     @Column(name = "c_count")
-    @NotNull
     private Integer count;
 
     @Column(name = "c_x_from")
-    @NotNull
     private Double xFrom;
 
     @Column(name = "c_x_to")
-    @NotNull
     private Double xTo;
 
     @OneToMany(mappedBy = "function", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
