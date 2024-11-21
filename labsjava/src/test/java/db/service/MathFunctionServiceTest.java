@@ -57,9 +57,11 @@ class MathFunctionServiceTest {
         MathFunctionDTO mathFunctionDTO = mathFunctionService.create(functionDTO);
 
         mathFunctionDTO.setFunctionType("test2");
+
+        MathFunctionDTO updated = mathFunctionService.update(mathFunctionDTO);
         
         assertNotNull(mathFunctionDTO);
-        assertEquals("test2", mathFunctionDTO.getFunctionType());
+        assertEquals("test2", updated.getFunctionType());
     }
 
     @Test

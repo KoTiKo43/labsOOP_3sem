@@ -88,4 +88,21 @@ class PointServiceTest {
 
         assertTrue(pointRepository.findById(point.getId()).isEmpty());
     }
+
+    @Test
+    void testGetPointsForFunction() {
+
+        PointDTO pointDTO = new PointDTO(null, function.getId(), 5.0, 2.0);
+        PointDTO point = pointService.create(pointDTO);
+
+        assertEquals(1, pointService.findByFunction(function.getId()).size());
+    }
+
+    @Test
+    void testFindByFunction() {
+        PointDTO pointDTO = new PointDTO(null, function.getId(), 5.0, 2.0);
+        PointDTO point = pointService.create(pointDTO);
+
+        assertEquals(1, pointService.findByFunction(function.getId()).size());
+    }
 }
