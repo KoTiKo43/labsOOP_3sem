@@ -42,6 +42,7 @@ public class MathFunctionService {
         throw new RuntimeException("Function not found with id: " + mathFunctionDTO.getId());
     }
 
+
     public void delete(Integer id) {
         if (mathFunctionRepository.existsById(id)) {
             mathFunctionRepository.deleteById(id);

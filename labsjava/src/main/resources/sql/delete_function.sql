@@ -1,0 +1,1 @@
+DELETE FROM mathfunction.t_function WHERE id = ?;
