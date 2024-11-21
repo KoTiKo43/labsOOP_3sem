@@ -1,21 +1,28 @@
 package db.service;
 
 import db.dto.PointDTO;
+import db.entity.MathFunctionEntity;
 import db.entity.PointEntity;
 import db.mapper.PointMapper;
 import db.repository.PointRepository;
+import db.repository.MathFunctionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PointService {
     private final PointRepository pointRepository;
     private final PointMapper pointMapper;
+    private final MathFunctionRepository mathFunctionRepository;
 
     @Autowired
-    public PointService(PointRepository pointRepository, PointMapper pointMapper) {
+    public PointService(PointRepository pointRepository, PointMapper pointMapper, MathFunctionRepository mathFunctionRepository) {
         this.pointRepository = pointRepository;
         this.pointMapper = pointMapper;
+        this.mathFunctionRepository = mathFunctionRepository;
     }
 
     public PointDTO create(PointDTO pointDTO) {
@@ -28,6 +35,18 @@ public class PointService {
         return pointRepository.findById(id)
                 .map(pointMapper::toDTO)
                 .orElse(null);
+    }
+
+    public List<PointDTO> findByFunction(Integer id) {
+        return mathFunctionRepository.findById(id)
+                .map(this::getPointsForFunction)
+                .orElse(null);
+    }
+
+    private List<PointDTO> getPointsForFunction(MathFunctionEntity function) {
+        return pointRepository.findByFunction(function).stream()
+                .map(pointMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     public PointDTO update(PointDTO pointDTO) {

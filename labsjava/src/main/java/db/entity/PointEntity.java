@@ -18,14 +18,11 @@ public class PointEntity {
 
     @ManyToOne
     @JoinColumn(name = "function_id", referencedColumnName = "id", nullable = false)
-    @NotNull
     private MathFunctionEntity function;
 
     @Column(name = "c_x_value")
-    @NotNull
     private Double xValue;
 
     @Column(name = "c_y_value")
-    @NotNull
     private Double yValue;
 }

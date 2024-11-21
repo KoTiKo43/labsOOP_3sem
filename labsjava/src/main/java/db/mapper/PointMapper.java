@@ -1,6 +1,7 @@
 package db.mapper;
 
 import db.dto.PointDTO;
+import db.entity.MathFunctionEntity;
 import db.entity.PointEntity;
 import org.springframework.stereotype.Repository;
 
@@ -15,6 +16,9 @@ public class PointMapper {
         entity.setId(dto.getId());
         entity.setXValue(dto.getXValue());
         entity.setYValue(dto.getYValue());
+        MathFunctionEntity function = new MathFunctionEntity();
+        function.setId(dto.getFunctionId());
+        entity.setFunction(function);
 
         return entity;
     }
