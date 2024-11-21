@@ -17,7 +17,7 @@ public class PointEntity {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "function_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "function_id", referencedColumnName = "id")
     private MathFunctionEntity function;
 
     @Column(name = "c_x_value")
