@@ -1,7 +1,5 @@
 package db.service;
 
-import db.LabsJavaApplication;
-import db.dto.MathFunctionDTO;
 import db.dto.PointDTO;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,10 +8,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import db.entity.PointEntity;
 import db.entity.MathFunctionEntity;
 import db.repository.MathFunctionRepository;
 import db.repository.PointRepository;
