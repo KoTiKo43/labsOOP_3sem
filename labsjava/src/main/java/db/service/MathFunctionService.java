@@ -7,9 +7,6 @@ import db.repository.MathFunctionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
 public class MathFunctionService {
     private final MathFunctionRepository mathFunctionRepository;
@@ -41,7 +38,6 @@ public class MathFunctionService {
         }
         throw new RuntimeException("Function not found with id: " + mathFunctionDTO.getId());
     }
-
 
     public void delete(Integer id) {
         if (mathFunctionRepository.existsById(id)) {

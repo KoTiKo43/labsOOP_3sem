@@ -1,6 +1,5 @@
 package db.mapper;
 
-import db.dto.MathFunctionDTO;
 import db.dto.PointDTO;
 import db.entity.MathFunctionEntity;
 import db.entity.PointEntity;
