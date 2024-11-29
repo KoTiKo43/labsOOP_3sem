@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/points")
-public class PointController {
+public class PointRestController {
     private final PointService pointService;
 
     @GetMapping("/function/{id}")

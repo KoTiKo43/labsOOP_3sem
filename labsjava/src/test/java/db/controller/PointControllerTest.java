@@ -13,17 +13,16 @@ import org.springframework.http.ResponseEntity;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class PointControllerTest {
+class PointRestControllerTest {
 
     @Mock
     private PointService pointService;
 
     @InjectMocks
-    private PointController controller;
+    private PointRestController controller;
 
     private PointDTO pointDTO;
 
