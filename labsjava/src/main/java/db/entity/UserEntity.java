@@ -10,7 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="t_user")
+@Table(schema = "mathfunction", name="t_user")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
