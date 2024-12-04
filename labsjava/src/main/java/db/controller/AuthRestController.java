@@ -44,7 +44,7 @@ public class AuthRestController {
         );
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getUsername());
-        String jwt = jwtUtils.generateToken(userDetails); // Changed to match JwtUtils method name
+        String jwt = jwtUtils.generateToken(userDetails);
 
         return ResponseEntity.ok(new JwtResponse(jwt));
     }
