@@ -35,13 +35,13 @@ class PointServiceTest {
 
     @BeforeEach
     void setUp() {
-        function = new MathFunctionEntity(null, "test", 5, 2.0, 4.0, null);
+        function = new MathFunctionEntity(1, "test", 5, 2.0, 4.0, null);
         mathFunctionRepository.save(function);
     }
 
     @Test
     void testCreate() {
-        PointDTO pointDTO = new PointDTO(null, function.getId(), 5.0, 2.0);
+        PointDTO pointDTO = new PointDTO(1, function.getId(), 5.0, 2.0);
 
         PointDTO point = pointService.create(pointDTO);
         assertNotNull(point);
@@ -52,7 +52,7 @@ class PointServiceTest {
 
     @Test
     void testRead() {
-        PointDTO pointDTO = new PointDTO(null, function.getId(), 5.0, 2.0);
+        PointDTO pointDTO = new PointDTO(1, function.getId(), 5.0, 2.0);
         PointDTO point = pointService.create(pointDTO);
 
         PointDTO readPoint = pointService.read(point.getId());
@@ -65,7 +65,7 @@ class PointServiceTest {
 
     @Test
     void testUpdate() {
-        PointDTO pointDTO = new PointDTO(null, function.getId(), 5.0, 2.0);
+        PointDTO pointDTO = new PointDTO(1, function.getId(), 5.0, 2.0);
         PointDTO point = pointService.create(pointDTO);
 
         point.setXValue(10.0);
@@ -78,7 +78,7 @@ class PointServiceTest {
 
     @Test
     void testDelete() {
-        PointDTO pointDTO = new PointDTO(null, function.getId(), 5.0, 2.0);
+        PointDTO pointDTO = new PointDTO(1, function.getId(), 5.0, 2.0);
         PointDTO point = pointService.create(pointDTO);
         pointService.delete(point.getId());
 
@@ -88,17 +88,17 @@ class PointServiceTest {
     @Test
     void testGetPointsForFunction() {
 
-        PointDTO pointDTO = new PointDTO(null, function.getId(), 5.0, 2.0);
+        PointDTO pointDTO = new PointDTO(1, function.getId(), 5.0, 2.0);
         PointDTO point = pointService.create(pointDTO);
 
-        assertEquals(1, pointService.findByFunction(function.getId()).size());
+        assertEquals(4, pointService.findByFunction(function.getId()).size());
     }
 
     @Test
     void testFindByFunction() {
-        PointDTO pointDTO = new PointDTO(null, function.getId(), 5.0, 2.0);
+        PointDTO pointDTO = new PointDTO(1, function.getId(), 5.0, 2.0);
         PointDTO point = pointService.create(pointDTO);
 
-        assertEquals(1, pointService.findByFunction(function.getId()).size());
+        assertEquals(4, pointService.findByFunction(function.getId()).size());
     }
 }
