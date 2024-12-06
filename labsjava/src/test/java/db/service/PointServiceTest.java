@@ -35,8 +35,13 @@ class PointServiceTest {
 
     @BeforeEach
     void setUp() {
-        function = new MathFunctionEntity(1, "test", 5, 2.0, 4.0, null);
-        mathFunctionRepository.save(function);
+        function = new MathFunctionEntity();
+        function.setFunctionType("test");
+        function.setCount(5);
+        function.setXFrom(2.0);
+        function.setXTo(4.0);
+
+        function = mathFunctionRepository.save(function);
     }
 
     @Test
@@ -91,7 +96,7 @@ class PointServiceTest {
         PointDTO pointDTO = new PointDTO(1, function.getId(), 5.0, 2.0);
         PointDTO point = pointService.create(pointDTO);
 
-        assertEquals(4, pointService.findByFunction(function.getId()).size());
+        assertEquals(1, pointService.findByFunction(function.getId()).size());
     }
 
     @Test
@@ -99,6 +104,6 @@ class PointServiceTest {
         PointDTO pointDTO = new PointDTO(1, function.getId(), 5.0, 2.0);
         PointDTO point = pointService.create(pointDTO);
 
-        assertEquals(4, pointService.findByFunction(function.getId()).size());
+        assertEquals(1, pointService.findByFunction(function.getId()).size());
     }
 }
