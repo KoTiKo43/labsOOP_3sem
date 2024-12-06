@@ -33,7 +33,7 @@ class PointRepositoryIT {
     @BeforeEach
     public void setup() {
         MathFunctionEntity functionEntity = new MathFunctionEntity();
-        functionEntity.setId(1);
+        functionEntity.setId(525252);
         functionEntity.setFunctionType("test_function");
         functionEntity.setCount(5);
         functionEntity.setXFrom(2D);
@@ -43,12 +43,12 @@ class PointRepositoryIT {
 
     @Test
     public void testFindByFunctionEntity() {
-        MathFunctionEntity functionEntity = mathFunctionRepository.findById(1).orElseThrow();
+        MathFunctionEntity functionEntity = mathFunctionRepository.findById(525252).orElseThrow();
 
         List<PointEntity> points = pointRepository.findByFunction(functionEntity);
 
         assertEquals(4, points.size());
-        assertEquals(1, points.get(0).getId());
+        assertEquals(11111, points.get(0).getId());
     }
 
 }

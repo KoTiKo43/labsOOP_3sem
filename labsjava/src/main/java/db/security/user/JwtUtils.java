@@ -16,15 +16,10 @@ import java.util.Date;
 public class JwtUtils {
     private final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
     @Value("${jwt.secret}")
-    private String secret;
+    protected String secret;
 
     @Value("${jwt.expiration}")
-    private long expiration;
-
-    private Key getSigningKey() {
-        byte[] keyBytes = Base64.getDecoder().decode(secret);
-        return Keys.hmacShaKeyFor(keyBytes);
-    }
+    protected long expiration;
 
     public String generateToken(UserDetails userDetails) {
         return Jwts.builder()
@@ -39,7 +34,7 @@ public class JwtUtils {
         return Jwts.parser().setSigningKey(secret).build().parseClaimsJws(token).getBody().getSubject();
     }
 
-    public boolean validateToken(String token, UserDetails userDetails) {
+    public boolean validateToken(String token) {
         try {
             Jwts.parser()
                     .setSigningKey(secret)

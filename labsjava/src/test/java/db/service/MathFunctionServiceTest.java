@@ -29,7 +29,7 @@ class MathFunctionServiceTest {
 
     @Test
     void testCreate() {
-        MathFunctionDTO functionDTO = new MathFunctionDTO(null, "test", 3, 0.0, 2.0);
+        MathFunctionDTO functionDTO = new MathFunctionDTO(1, "test", 3, 0.0, 2.0);
 
         MathFunctionDTO mathFunctionDTO = mathFunctionService.create(functionDTO);
         assertNotNull(mathFunctionDTO);
@@ -41,7 +41,7 @@ class MathFunctionServiceTest {
 
     @Test
     void testRead() {
-        MathFunctionDTO functionDTO = new MathFunctionDTO(null, "test", 3, 0.0, 2.0);
+        MathFunctionDTO functionDTO = new MathFunctionDTO(1, "test", 3, 0.0, 2.0);
 
         MathFunctionDTO mathFunctionDTO = mathFunctionService.create(functionDTO);
 
@@ -52,7 +52,7 @@ class MathFunctionServiceTest {
 
     @Test
     void testUpdate() {
-        MathFunctionDTO functionDTO = new MathFunctionDTO(null, "test", 3, 0.0, 2.0);
+        MathFunctionDTO functionDTO = new MathFunctionDTO(1, "test", 3, 0.0, 2.0);
 
         MathFunctionDTO mathFunctionDTO = mathFunctionService.create(functionDTO);
 
@@ -66,7 +66,7 @@ class MathFunctionServiceTest {
 
     @Test
     void testDelete() {
-        MathFunctionDTO functionDTO = new MathFunctionDTO(null, "test", 3, 0.0, 2.0);
+        MathFunctionDTO functionDTO = new MathFunctionDTO(1, "test", 3, 0.0, 2.0);
 
         MathFunctionDTO mathFunctionDTO = mathFunctionService.create(functionDTO);
 
