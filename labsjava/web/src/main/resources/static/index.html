@@ -26,9 +26,6 @@
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="diff.html">Дифференцирование</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="function_editor.html">Function Editor</a>
-                </li>
             </ul>
         </div>
     </div>
@@ -47,6 +44,10 @@
                         </button>
                         <button type="button" class="btn btn-primary" onclick="openImportFuncModal(1)">Загрузить
                         </button>
+                        <!-- Кнопка Вставки -->
+                        <button id="operand1_insert_button" type="button" class="btn btn-secondary" onclick="insertPoint(1)" style="display: none;">
+                            Вставка
+                        </button>
                     </div>
                 </div>
             </th>
@@ -58,6 +59,10 @@
                                 onclick="exportFunc(2)">Сохранить
                         </button>
                         <button type="button" class="btn btn-primary" onclick="openImportFuncModal(2)">Загрузить
+                        </button>
+                        <!-- Кнопка Вставки -->
+                        <button id="operand2_insert_button" type="button" class="btn btn-secondary" onclick="insertPoint(2)" style="display: none;">
+                            Вставка
                         </button>
                     </div>
                 </div>
@@ -85,6 +90,10 @@
                 <div class="mb-3 d-grid gap-2">
                     <button id="result_export_button" type="button" class="btn btn-primary" disabled
                             onclick="exportFunc(3)">Сохранить
+                    </button>
+                    <!-- Кнопка Вставки -->
+                    <button id="result_insert_button" type="button" class="btn btn-secondary" onclick="insertPoint(3)" style="display: none;">
+                        Вставка
                     </button>
                 </div>
             </th>
@@ -166,6 +175,7 @@
     </table>
 </div>
 
+<!-- Модальное окно для создания функции (1/2) -->
 <div class="modal fade" id="modalCreateFuncStep1" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -179,9 +189,9 @@
                 <div class="mb-3">
                     <label for="modalCreateFuncStep1__count" class="form-label">Укажите количество точек</label>
                     <input type="number" class="form-control" id="modalCreateFuncStep1__count" value="2" min="2">
-                           <!--
-                           pattern="^[0-9]+$" title="Введите целое число, не меньше 2">
-                           -->
+                    <!--
+                    pattern="^[0-9]+$" title="Введите целое число, не меньше 2">
+                    -->
                 </div>
 
                 <div class="mb-3">
@@ -196,16 +206,16 @@
                     <div class="input-group">
                         <span class="input-group-text">от</span>
                         <input id="modalCreateFuncStep1__xFrom" type="text">
-                               <!--
-                               class="form-control" pattern="^-?(0|0[\.,][0-9]+|[1-9]+[\.,][0-9]+|[0-9]+)$"
-                               title="Введите число с плавающей точкой">
-                               -->
+                        <!--
+                        class="form-control" pattern="^-?(0|0[\.,][0-9]+|[1-9]+[\.,][0-9]+|[0-9]+)$"
+                        title="Введите число с плавающей точкой">
+                        -->
                         <span class="input-group-text">до</span>
                         <input id="modalCreateFuncStep1__xTo" type="text">
-                               <!--
-                               class="form-control" pattern="^-?(0|0[\.,][0-9]+|[1-9]+[\.,][0-9]+|[0-9]+)$"
-                               title="Введите число с плавающей точкой">
-                               -->
+                        <!--
+                        class="form-control" pattern="^-?(0|0[\.,][0-9]+|[1-9]+[\.,][0-9]+|[0-9]+)$"
+                        title="Введите число с плавающей точкой">
+                        -->
                     </div>
                 </div>
 
@@ -230,6 +240,7 @@
     </div>
 </div>
 
+<!-- Модальное окно для создания функции (2/2) -->
 <div class="modal fade" id="modalCreateFuncStep2" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -259,6 +270,7 @@
     </div>
 </div>
 
+<!-- Модальное окно для загрузки функции -->
 <div class="modal fade" id="modalImportFunc" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -278,6 +290,7 @@
     </div>
 </div>
 
+<!-- Модальное окно для ошибок -->
 <div class="modal fade" id="modalError" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content bg-dark text-white">
@@ -294,6 +307,7 @@
     </div>
 </div>
 
+<!-- Шаблон строки таблицы для создания функций -->
 <template id="modalCreateFuncStep2__template_row">
     <tr>
         <td>1</td>
@@ -302,17 +316,43 @@
     </tr>
 </template>
 
+<!-- Шаблон строки для отображения функций -->
 <template id="view_table__template_row">
     <tr>
         <td>1</td>
         <td><input data-wu-point="x" type="text" disabled></td>
-        <td><input data-wu-point="y" type="text">
-                   <!--
-                   pattern="^-?(0|0[\.,][0-9]+|[1-9]+[\.,][0-9]+|[0-9]+)$"
-                   title="Введите число с плавающей точкой"></td>
-                   -->
+        <td><input data-wu-point="y" type="text"></td>
+        <!--
+        pattern="^-?(0|0[\.,][0-9]+|[1-9]+[\.,][0-9]+|[0-9]+)$"
+        title="Введите число с плавающей точкой"></td>
+        -->
     </tr>
 </template>
+
+<!-- Модальное окно для вставки новой точки -->
+<div class="modal fade" id="modalInsertPoint" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Вставка точки</h1>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="insertPoint__x" class="form-label">X</label>
+                    <input type="number" step="any" class="form-control" id="insertPoint__x" required>
+                </div>
+                <div class="mb-3">
+                    <label for="insertPoint__y" class="form-label">Y</label>
+                    <input type="number" step="any" class="form-control" id="insertPoint__y" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeInsertPointModal()">Отмена</button>
+                <button type="button" class="btn btn-primary" onclick="confirmInsertPoint()">Вставить</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="script.js"></script>
 </body>

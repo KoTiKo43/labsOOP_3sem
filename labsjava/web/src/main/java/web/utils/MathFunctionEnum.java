@@ -9,13 +9,8 @@ import java.util.function.Supplier;
 @RequiredArgsConstructor
 @Getter
 public enum MathFunctionEnum {
-    IDENTITY(new Supplier<MathFunction>() {
-        @Override
-        public MathFunction get() {
-            return new IdentityFunction();
-        }
-    }, "Тождественная функция"),
-    SQR(() -> new SqrFunction(), "Квадратичная функция"),
+    IDENTITY(IdentityFunction::new, "Тождественная функция"),
+    SQR(SqrFunction::new, "Квадратичная функция"),
     UNIT(UnitFunction::new, "Единичная функция"),
     ZERO(ZeroFunction::new, "Нулевая функция");
 

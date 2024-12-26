@@ -1,3 +1,4 @@
+// Инициализация модальных окон
 let modalCreateFuncStep1 = new bootstrap.Modal(document.getElementById("modalCreateFuncStep1"))
 let modalCreateFuncStep2 = new bootstrap.Modal(document.getElementById("modalCreateFuncStep2"))
 let modalImportFunc = new bootstrap.Modal(document.getElementById("modalImportFunc"))
@@ -29,15 +30,28 @@ let result_table__operation = document.getElementById("result_table__operation")
 let result_table__submit = document.getElementById("result_table__submit")
 let result_table__fabric = document.getElementById("result_table__fabric")
 let result_export_button = document.getElementById("result_export_button")
+let result_insert_button = document.getElementById("result_insert_button") // Новая переменная
 let result_table = document.getElementById("result_table")
 
 let view_table__template_row = document.getElementById("view_table__template_row")
+
+// Объявление переменных для кнопок Вставки
+let operand1_insert_button = document.getElementById("operand1_insert_button");
+let operand2_insert_button = document.getElementById("operand2_insert_button");
+// let result_insert_button уже объявлена выше
 
 let selectedCreateOperand = 0
 let selectedImportOperand = 0
 let operand1_id = 0
 let operand2_id = 0
 let resultFunc_id = 0
+
+// Инициализация модального окна для вставки точки
+let modalInsertPoint = new bootstrap.Modal(document.getElementById("modalInsertPoint"));
+let insertPoint__x = document.getElementById("insertPoint__x");
+let insertPoint__y = document.getElementById("insertPoint__y");
+
+let currentInsertOperand = 0; // 1 для operand1, 2 для operand2, 3 для результата
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // MODAL CREATE TABULATED FUNCTION STEP 1
@@ -192,6 +206,21 @@ function submitCreateFunc() {
                 tbody.appendChild(cloned);
             }
 
+            // Управление видимостью кнопки Вставки
+            if (json.insertable) {
+                if (selectedCreateOperand === 1) {
+                    operand1_insert_button.style.display = "inline-block";
+                } else if (selectedCreateOperand === 2) {
+                    operand2_insert_button.style.display = "inline-block";
+                }
+            } else {
+                if (selectedCreateOperand === 1) {
+                    operand1_insert_button.style.display = "none";
+                } else if (selectedCreateOperand === 2) {
+                    operand2_insert_button.style.display = "none";
+                }
+            }
+
             modalCreateFuncStep1.hide()
             modalCreateFuncStep2.hide()
         })
@@ -265,6 +294,21 @@ function submitImport() {
                 tbody.appendChild(cloned);
             }
 
+            // Управление видимостью кнопки Вставки
+            if (json.insertable) {
+                if (selectedImportOperand === 1) {
+                    operand1_insert_button.style.display = "inline-block";
+                } else if (selectedImportOperand === 2) {
+                    operand2_insert_button.style.display = "inline-block";
+                }
+            } else {
+                if (selectedImportOperand === 1) {
+                    operand1_insert_button.style.display = "none";
+                } else if (selectedImportOperand === 2) {
+                    operand2_insert_button.style.display = "none";
+                }
+            }
+
             modalImportFunc.hide()
         })
         .catch(err => {
@@ -330,6 +374,14 @@ function submitOperation() {
 
                 tbody.appendChild(cloned);
             }
+
+            // Управление видимостью кнопки Вставки для результата
+            if (json.insertable) {
+                result_insert_button.style.display = "inline-block";
+            } else {
+                result_insert_button.style.display = "none";
+            }
+
         })
         .catch(err => {
             console.log(err)
@@ -339,7 +391,7 @@ function submitOperation() {
 }
 
 function updateFunc(number_operand, pointIdx) {
-    //this = inputY
+    // this = inputY
 
     if (!this.checkValidity()) {
         return
@@ -357,13 +409,6 @@ function updateFunc(number_operand, pointIdx) {
         },
         body: JSON.stringify(request)
     })
-//        .then(resp => resp.json())
-//        .then(json => {
-//            if ("error_class" in json) {
-//                console.log(json)
-//                __openModalError(`${json.error_class}: ${json.error_message}`)
-//            }
-//        })
         .catch(err => {
             console.log(err)
             __openModalError(JSON.stringify(err))
@@ -386,6 +431,107 @@ function exportFunc(operand_num) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// MODAL INSERT POINT
+
+function insertPoint(operand_num) {
+    currentInsertOperand = operand_num;
+    insertPoint__x.value = "";
+    insertPoint__y.value = "";
+    modalInsertPoint.show();
+}
+
+function closeInsertPointModal() {
+    modalInsertPoint.hide();
+}
+
+function confirmInsertPoint() {
+    let x = parseFloat(insertPoint__x.value);
+    let y = parseFloat(insertPoint__y.value);
+
+    if (isNaN(x) || isNaN(y)) {
+        __openModalError("Пожалуйста, введите корректные значения для X и Y.");
+        return;
+    }
+
+    let mathFuncId;
+    if (currentInsertOperand === 1) {
+        mathFuncId = operand1_id;
+    } else if (currentInsertOperand === 2) {
+        mathFuncId = operand2_id;
+    } else if (currentInsertOperand === 3) {
+        mathFuncId = resultFunc_id;
+    } else {
+        modalInsertPoint.hide();
+        return;
+    }
+
+    let request = {
+        x: x,
+        y: y
+    };
+
+    fetch(`/api/functions/${mathFuncId}/insert`, {
+        method: "POST",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(request)
+    })
+        .then(resp => {
+            if (!resp.ok) {
+                return resp.json().then(errJson => {
+                    throw new Error(errJson.error_message || "Ошибка при вставке точки.");
+                });
+            }
+            return resp.json();
+        })
+        .then(json => {
+            console.log(json);
+            // Обновление соответствующей таблицы
+            let operand_table;
+            if (currentInsertOperand === 1) {
+                operand_table = operand1_table;
+            } else if (currentInsertOperand === 2) {
+                operand_table = operand2_table;
+            } else if (currentInsertOperand === 3) {
+                operand_table = result_table;
+            }
+
+            let tbody = operand_table.querySelector("tbody");
+            tbody.replaceChildren();
+
+            let count = json.points.length;
+            for (let i = 0; i < count; i++) {
+                let cloned = view_table__template_row.content.cloneNode(true);
+
+                let td = cloned.querySelector("tr > td:nth-child(1)");
+                let inputX = cloned.querySelector("input[data-wu-point='x']");
+                let inputY = cloned.querySelector("input[data-wu-point='y']");
+
+                td.textContent = i + 1;
+                inputX.value = json.points[i].x;
+                inputY.value = json.points[i].y;
+
+                inputX.disabled = true;
+                if (currentInsertOperand !== 3) { // Предполагается, что результат нельзя изменять
+                    inputY.onchange = updateFunc.bind(inputY, currentInsertOperand, i);
+                } else {
+                    inputY.disabled = true;
+                }
+
+                tbody.appendChild(cloned);
+            }
+
+            modalInsertPoint.hide();
+        })
+        .catch(err => {
+            console.log(err);
+            __openModalError(err.message);
+        });
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // PRIVATE FUNCTIONS
 
 function __sortL10N(json) {
@@ -401,6 +547,15 @@ function __sortL10N(json) {
 }
 
 function __openModalError(message) {
-    modalError__message.innerText = message
-    modalError.show()
+    modalError__message.innerText = message;
+    modalError.show();
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Инициализация Кнопок Вставки при Загрузке Страницы (Шаг 2.2.4)
+
+document.addEventListener("DOMContentLoaded", () => {
+    operand1_insert_button.style.display = "none";
+    operand2_insert_button.style.display = "none";
+    result_insert_button.style.display = "none";
+});

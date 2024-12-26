@@ -16,4 +16,8 @@ public class MathFunctionResponse {
     private int id;
 
     private LinkedList<PointDto> points;
+
+    private boolean insertable;
+
+    private boolean removable;
 }

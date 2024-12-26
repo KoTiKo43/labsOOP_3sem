@@ -1,5 +1,7 @@
 package web.controller;
 
+import functions.Insertable;
+import functions.Removable;
 import functions.TabulatedFunction;
 import functions.factory.TabulatedFunctionFactory;
 import io.FunctionsIO;
@@ -86,6 +88,9 @@ public class MathFunctionController {
             response.getPoints().add(new PointDto(p.x, p.y));
         });
 
+        response.setInsertable(tabulatedFunction instanceof Insertable);
+        response.setRemovable(tabulatedFunction instanceof Removable);
+
         return response;
     }
 
@@ -99,6 +104,9 @@ public class MathFunctionController {
         tabulatedFunction.iterator().forEachRemaining(p -> {
             response.getPoints().add(new PointDto(p.x, p.y));
         });
+
+        response.setInsertable(tabulatedFunction instanceof Insertable);
+        response.setRemovable(tabulatedFunction instanceof Removable);
 
         return response;
     }
@@ -159,6 +167,9 @@ public class MathFunctionController {
         tabulatedFunctionResult.iterator().forEachRemaining(p -> {
             response.getPoints().add(new PointDto(p.x, p.y));
         });
+
+        response.setInsertable(tabulatedFunctionResult instanceof Insertable);
+        response.setRemovable(tabulatedFunctionResult instanceof Removable);
 
         return response;
     }
@@ -232,6 +243,9 @@ public class MathFunctionController {
             response.getPoints().add(new PointDto(p.x, p.y));
         });
 
+        response.setInsertable(tabulatedFunction instanceof Insertable);
+        response.setRemovable(tabulatedFunction instanceof Removable);
+
         return response;
     }
 
@@ -258,5 +272,31 @@ public class MathFunctionController {
                 Enum::name,
                 MathFunctionEnum::getLocalization
         ));
+    }
+
+    //
+    @PostMapping("/{id}/insert")
+    public ResponseEntity<MathFunctionResponse> insertPoint(
+            @PathVariable(name = "id") Integer mathFuncId,
+            @RequestBody PointDto newPoint
+    ) {
+        var tabulatedFunction = tabulatedFunctionMap.get(mathFuncId);
+        if (!(tabulatedFunction instanceof Insertable)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(null);
+        }
+
+        ((Insertable) tabulatedFunction).insert(newPoint.getX(), newPoint.getY());
+
+        var response = new MathFunctionResponse();
+        response.setId(mathFuncId);
+        response.setPoints(new LinkedList<>());
+        tabulatedFunction.iterator().forEachRemaining(p -> {
+            response.getPoints().add(new PointDto(p.x, p.y));
+        });
+        response.setInsertable(true);
+        response.setRemovable(tabulatedFunction instanceof Removable);
+
+        return ResponseEntity.ok(response);
     }
 }
