@@ -235,6 +235,22 @@ public class MathFunctionController {
         return response;
     }
 
+    @PostMapping("/{id}/apply")
+    public MathFunctionApplyResponse applyFunc(
+            @PathVariable(name = "id") Integer mathFuncId,
+            @RequestBody MathFunctionApplyRequest request
+    ) {
+        var tabulatedFunction = tabulatedFunctionMap.get(mathFuncId);
+
+        var tabulatedFunctionResult = tabulatedFunction.apply(request.getXValue());
+
+
+        var response = new MathFunctionApplyResponse();
+        response.setResult(tabulatedFunctionResult);
+
+        return response;
+    }
+
     // L10N = Localization
     @GetMapping("/l10n")
     public Map<String, String> getL10n() {
