@@ -1,14 +1,22 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8"/>
-    <title>WEB-UI: Дифференцирование</title>
+    <meta charset="UTF-8">
+    <title>WEB-UI: Function Editor</title>
 
     <link rel="stylesheet" href="bootstrap.min.css">
-    <link rel="stylesheet" href="diff.css">
+    <link rel="stylesheet" href="style.css">
 
     <script src="popper.min.js"></script>
     <script src="bootstrap.min.js"></script>
+
+    <script src="chart.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .table-responsive {
+            overflow-x: auto;
+        }
+    </style>
 </head>
 <body>
 <nav class="navbar bg-dark navbar-expand-lg border-bottom border-body wu-navbar" data-bs-theme="dark">
@@ -24,60 +32,27 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Дифференцирование</a>
+                    <a class="nav-link" aria-current="page" href="diff.html">Дифференцирование</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="function_editor.html">Function Editor</a>
+                    <a class="nav-link active" href="function_editor.html">Function Editor</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
 
-<div class="container">
-    <table class="wu-main_table">
-        <thead>
-        <tr>
-            <th class="align-bottom">
-                <div class="mb-3">
-                    <button type="button" class="btn btn-primary" onclick="openStep1ModalCreateFunc()">Создать</button>
-                    <div class="btn-group">
-                        <button id="operand_export_button" type="button" class="btn btn-primary" disabled
-                                onclick="exportFunc(1)">Сохранить
-                        </button>
-                        <button type="button" class="btn btn-primary" onclick="openImportFuncModal(1)">Загрузить
-                        </button>
-                    </div>
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="mb-3">
+                <button type="button" class="btn btn-primary" onclick="openStep1ModalCreateFunc()">Создать</button>
+                <div class="btn-group">
+                    <button id="operand_export_button" type="button" class="btn btn-primary" disabled onclick="exportFunc(1)">Сохранить</button>
+                    <button type="button" class="btn btn-primary" onclick="openImportFuncModal(1)">Загрузить</button>
                 </div>
-            </th>
-            <th class="align-bottom">
-                <div class="mb-3 text-center input-group">
-                    <span class="input-group-text">Операция</span>
-                    <select disabled id="result_table__operation" class="form-select">
-                        <option>Дифференцирование</option>
-                    </select>
-                    <button id="result_table__submit" disabled class="btn btn-primary" onclick="submitOperation()">
-                        Выполнить
-                    </button>
-                </div>
-                <div class="mb-3 text-center input-group">
-                    <span class="input-group-text">Фабрика</span>
-                    <select id="result_table__fabric" class="form-select">
-                        <option selected value="array">Массив</option>
-                        <option value="linked">Связанный список</option>
-                    </select>
-                </div>
-                <div class="mb-3 d-grid gap-2">
-                    <button id="result_export_button" type="button" class="btn btn-primary" disabled
-                            onclick="exportFunc(2)">Сохранить
-                    </button>
-                </div>
-            </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>
+            </div>
+            <div class="table-responsive">
                 <table id="operand_table" class="wu-view-tab">
                     <thead>
                     <tr>
@@ -99,33 +74,32 @@
                     </tr>
                     </tbody>
                 </table>
-            </td>
-            <td>
-                <table id="result_table" class="wu-view-tab">
-                    <thead>
-                    <tr>
-                        <th style="width: 10%">#</th>
-                        <th style="width: 45%">X</th>
-                        <th style="width: 45%">Y</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td><input data-wu-point="x" type="text" disabled></td>
-                        <td><input data-wu-point="y" type="text" disabled></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td><input data-wu-point="x" type="text" disabled></td>
-                        <td><input data-wu-point="y" type="text" disabled></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="functionChart"></canvas>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="applyX" class="form-label">Значение X:</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="applyX" step="any">
+                            <button class="btn btn-primary" onclick="submitApply()">Вычислить</button>
+                        </div>
+                    </div>
+                    <div id="applyResult" class="alert alert-info" style="display:none">
+                        Результат: <span id="applyResultValue"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
 </div>
 
 <div class="modal fade" id="modalCreateFuncStep1" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
@@ -140,10 +114,8 @@
             <div class="modal-body">
                 <div class="mb-3">
                     <label for="modalCreateFuncStep1__count" class="form-label">Укажите количество точек</label>
-                    <input type="number" class="form-control" id="modalCreateFuncStep1__count" value="2" min="2">
-                           <!--
+                    <input type="number" class="form-control" id="modalCreateFuncStep1__count" value="2" min="2"
                            pattern="^[0-9]+$" title="Введите целое число, не меньше 2">
-                           -->
                 </div>
 
                 <div class="mb-3">
@@ -157,15 +129,13 @@
                     <p class="form-label">Укажите интервал разбиения</p>
                     <div class="input-group">
                         <span class="input-group-text">от</span>
-                        <input id="modalCreateFuncStep1__xFrom" type="text"
+                        <input id="modalCreateFuncStep1__xFrom" type="number"
                                class="form-control" pattern="^-?(0|0[\.,][0-9]+|[1-9]+[\.,][0-9]+|[0-9]+)$"
                                title="Введите число с плавающей точкой">
                         <span class="input-group-text">до</span>
-                        <input id="modalCreateFuncStep1__xTo" type="text">
-                        <!--
+                        <input id="modalCreateFuncStep1__xTo" type="number"
                                class="form-control" pattern="^-?(0|0[\.,][0-9]+|[1-9]+[\.,][0-9]+|[0-9]+)$"
                                title="Введите число с плавающей точкой">
-                        -->
                     </div>
                 </div>
 
@@ -179,12 +149,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-link" onclick="cancelModalCreateFunc()">Отмена</button>
-                <button id="modalCreateFuncStep1__nextBtn" type="button" class="btn btn-primary"
-                        onclick="nextStep2ModalCreateFunc()">Далее &gt;
-                </button>
-                <button id="modalCreateFuncStep1__createBtn" type="button" class="btn btn-primary"
-                        onclick="submitCreateFunc()" style="display: none">Создать
-                </button>
+                <button type="button" class="btn btn-primary" onclick="nextStep2ModalCreateFunc()">Далее ></button>
             </div>
         </div>
     </div>
@@ -200,7 +165,7 @@
                 </div>
             </div>
             <div class="modal-body">
-                <table id="modalCreateFuncStep2__table">
+                <table id="modalCreateFuncStep2__table" class="table">
                     <thead>
                     <tr>
                         <th style="width: 10%">#</th>
@@ -238,22 +203,6 @@
     </div>
 </div>
 
-<div class="modal fade" id="modalError" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content bg-dark text-white">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5 fw-bold">ОШИБКА</h1>
-            </div>
-            <div class="modal-body">
-                <span id="modalError__message"></span>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <template id="modalCreateFuncStep2__template_row">
     <tr>
         <td>1</td>
@@ -265,14 +214,12 @@
 <template id="view_table__template_row">
     <tr>
         <td>1</td>
-        <td><input data-wu-point="x" type="text" disabled></td>
-        <td><input data-wu-point="y" type="text">
-<!--                   pattern="^-?(0|0[\.,][0-9]+|[1-9]+[\.,][0-9]+|[0-9]+)$"
+        <td><input data-wu-point="x" type="number" disabled></td>
+        <td><input data-wu-point="y" type="number"
+                   pattern="^-?(0|0[\.,][0-9]+|[1-9]+[\.,][0-9]+|[0-9]+)$"
                    title="Введите число с плавающей точкой"></td>
--->
     </tr>
 </template>
-
-<script src="diff.js"></script>
+<script src="function_editor.js"></script>
 </body>
 </html>
