@@ -1,0 +1,47 @@
+package operations;
+
+import concurrent.SynchronizedTabulatedFunction;
+import functions.Point;
+import functions.factory.ArrayTabulatedFunctionFactory;
+import functions.factory.TabulatedFunctionFactory;
+import functions.TabulatedFunction;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@AllArgsConstructor
+@Setter
+@Getter
+public class TabulatedDifferentialOperator implements DifferentialOperator<TabulatedFunction> {
+    private TabulatedFunctionFactory factory;
+
+    public TabulatedDifferentialOperator(){
+        this.factory = new ArrayTabulatedFunctionFactory();
+    }
+
+    @Override
+    public TabulatedFunction derive(TabulatedFunction function) {
+        Point[] points = TabulatedFunctionOperationService.asPoints(function);
+
+        int n = points.length;
+        double[] xValues = new double[n];
+        double[] yValues = new double[n];
+
+        for (int k = 0; k < n - 1; k++) {
+            xValues[k] = points[k].x;
+            yValues[k] = (points[k + 1].y - points[k].y) / (points[k + 1].x - points[k].x);
+        }
+        xValues[n - 1] = points[n - 1].x;
+        yValues[n - 1] = yValues[n - 2];
+
+        return factory.create(xValues, yValues);
+    }
+
+    public TabulatedFunction deriveSynchronously(TabulatedFunction function) {
+        if (! (function instanceof SynchronizedTabulatedFunction)) {
+            function = new SynchronizedTabulatedFunction(function);
+        }
+
+        return ((SynchronizedTabulatedFunction) function).doSynchronously(TabulatedDifferentialOperator.this::derive);
+    }
+}

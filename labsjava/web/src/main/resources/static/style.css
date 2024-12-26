@@ -1,0 +1,68 @@
+:root {
+    --wu-tab-spacing: 2em;
+}
+
+.btn:disabled,
+input:disabled {
+    cursor: not-allowed;
+    pointer-events: auto;
+}
+
+input:invalid {
+    border-color: red;
+    border-width: 3px;
+    color: red;
+}
+
+.wu-navbar {
+    margin-bottom: 1em;
+}
+
+.wu-main_table {
+    width: 100%;
+}
+
+.wu-main_table > thead > tr > th,
+.wu-main_table > tbody > tr > td {
+    text-align: center;
+    width: calc(100% / 3);
+
+    border-left: solid var(--wu-tab-spacing) transparent;
+    border-right: solid var(--wu-tab-spacing) transparent;
+}
+
+.wu-main_table > tbody > tr > td {
+    vertical-align: top;
+}
+
+.wu-main_table > thead > tr > th:first-child,
+.wu-main_table > tbody > tr > td:first-child {
+    border-left-width: 0;
+}
+
+.wu-main_table > thead > tr > th:last-child,
+.wu-main_table > tbody > tr > td:last-child {
+    border-right-width: 0;
+}
+
+#modalCreateFuncStep2__table {
+    width: 100%;
+}
+
+#modalCreateFuncStep2__table tr th {
+    text-align: center;
+}
+
+#modalCreateFuncStep2__table tbody td:nth-child(1) {
+    text-align: center;
+    font-weight: bold;
+}
+
+.wu-view-tab tr th {
+    text-align: center;
+}
+
+.wu-view-tab tbody td:nth-child(1) {
+    text-align: center;
+    font-weight: bold;
+}
