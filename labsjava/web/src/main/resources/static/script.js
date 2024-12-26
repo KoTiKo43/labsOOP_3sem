@@ -357,13 +357,13 @@ function updateFunc(number_operand, pointIdx) {
         },
         body: JSON.stringify(request)
     })
-        .then(resp => resp.json())
-        .then(json => {
-            if ("error_class" in json) {
-                console.log(json)
-                __openModalError(`${json.error_class}: ${json.error_message}`)
-            }
-        })
+//        .then(resp => resp.json())
+//        .then(json => {
+//            if ("error_class" in json) {
+//                console.log(json)
+//                __openModalError(`${json.error_class}: ${json.error_message}`)
+//            }
+//        })
         .catch(err => {
             console.log(err)
             __openModalError(JSON.stringify(err))
